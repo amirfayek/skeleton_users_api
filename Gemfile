@@ -28,18 +28,23 @@ gem 'rack-cors'
 
 gem 'devise'
 
+gem 'active_model_serializers'
+
 group :development, :test do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '>= 3.5.0'
+
+
 end
 
 group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'faker'
+  gem 'ffaker'
 end
 
 group :development do
