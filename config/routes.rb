@@ -1,13 +1,22 @@
+require 'api_constraints'
+
 Rails.application.routes.draw do
-  devise_for :users
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # devise_for :users,
+    # controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
+  # ,
+  #   :path_prefix => 'api/v1',
+  #   defaults: { format: :json },
+  #   controllers: {
+  #       sessions: 'users/sessions'
+  #     }
+
+  # Api definition
   namespace :api, defaults: { format: :json },
                               constraints: { subdomain: 'api' }, path: '/'  do
-
+    devise_for :users,
+      controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
     scope module: :v1 do
-      # We are going to list our resources here
-      resources :users
+        resources :users, :only => [:show, :create, :update, :destroy]
     end
   end
-
 end

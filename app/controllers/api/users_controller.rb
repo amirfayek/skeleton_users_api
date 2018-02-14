@@ -1,20 +1,19 @@
-class UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
+  # before_action :authenticate_user!, only: [:show, :update, :destroy]
+  before_action :authenticate_with_token!, only: [:show, :update, :destroy]
   before_action :set_user, only: [:show, :update, :destroy]
+  respond_to :json
 
   # GET /users
   def index
-    # p user_params
-    # p user_params.present?
-    @users = User.filter(params)
-
+    # @users = User.filter(params)
     # @users = User.all
-
-    render json: @users
+    # render json: @users
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, location: [:api, @user]
   end
 
   # POST /users
@@ -22,7 +21,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: @user, status: :created, location: [:api, @user]
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -31,7 +30,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      render json: @user
+      render json: @user, location: [:api, @user]
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -40,17 +39,18 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
+    head 204
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = @current_user
     end
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
 
     def query_params
