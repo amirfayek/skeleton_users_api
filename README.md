@@ -21,6 +21,7 @@ Things you may want to cover:
 
 ### Deployment instructions
 bundle install
+
 rails server
 
 ### Logging In
