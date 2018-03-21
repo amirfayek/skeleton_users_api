@@ -1,22 +1,16 @@
 require 'api_constraints'
 
 Rails.application.routes.draw do
-  # devise_for :users,
-    # controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
-  # ,
-  #   :path_prefix => 'api/v1',
-  #   defaults: { format: :json },
-  #   controllers: {
-  #       sessions: 'users/sessions'
-  #     }
+  devise_for :users
 
   # Api definition
   namespace :api, defaults: { format: :json },
                               constraints: { subdomain: 'api' }, path: '/'  do
-    devise_for :users,
-      controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
-    scope module: :v1 do
+    scope module: :v1,
+              constraints: ApiConstraints.new(version: 1, default: true) do
         resources :users, :only => [:show, :create, :update, :destroy]
+        resources :sessions, :only => [:create, :destroy]
+
     end
   end
 end

@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-class Users::SessionsController < Devise::SessionsController
+class Api::V1::SessionsController < ApplicationController
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -8,11 +6,13 @@ class Users::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # POST /resource/sign_in
+  # POST /session
   def create
-    user_password = params[:user][:password]
-    user_email = params[:user][:email]
-    user = user_email.present? && User.find_by(email: user_email)
+    p "*"*50
+    p user_password = params[:session][:password]
+    p user_email = params[:session][:email]
+    p user = user_email.present? && User.find_by(email: user_email)
+    p "*"*50
 
     if user.valid_password? user_password
       sign_in user, store: false
@@ -24,7 +24,7 @@ class Users::SessionsController < Devise::SessionsController
     end
   end
 
-  # DELETE /resource/sign_out
+  # DELETE /session
   def destroy
     user = User.find_by(auth_token: params[:id])
     user.generate_authentication_token!

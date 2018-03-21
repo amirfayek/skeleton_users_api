@@ -2,7 +2,6 @@ module Authenticable
 
   # Devise methods overwrites
   def current_user
-    bearer_token
     @current_user ||= User.find_by(auth_token: bearer_token)
   end
 

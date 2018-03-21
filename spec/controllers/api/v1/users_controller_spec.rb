@@ -18,8 +18,23 @@ require 'rails_helper'
 # # Message expectations are only used when there is no simpler way to specify
 # # that an instance is receiving a specific message.
 
-RSpec.describe UsersController, type: :controller do
-    it { should route(:get, '/users').to(action: :index) }
+RSpec.describe Api::V1::UsersController, type: :controller do
+  describe "GET #show" do
+    before(:each) do
+      @user = FactoryBot.build(:user)
+      get :show, id: @user.id, format: :json
+    end
+
+    it "returns the information about a reporter on a hash" do
+      user_response = JSON.parse(response.body, symbolize_names: true)
+      expect(user_response[:email]).to eql @user.email
+    end
+
+    it { should respond_with 200 }
+  end
+
+# it { should route(:get, '/users').to(action: :index) }
+
 #   # This should return the minimal set of attributes required to create a valid
 #   # User. As you add validations to User, be sure to
 #   # adjust the attributes here as well.
