@@ -19,6 +19,9 @@ Things you may want to cover:
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+### Deployment instructions
+bundle install
+rails server
 
-* ...
+### Logging In
+http://api.lvh.me:3000/sessions?session[email]=email@email.com&session[password]=123456
